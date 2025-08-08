@@ -10,9 +10,11 @@ export default async function PracticePage({
 
   if (!lessonId) {
     return (
-      <div>
-        <h2>练习（录音 + 评分占位）</h2>
-        <p>缺少 lessonId，请从课程列表进入。</p>
+      <div className="section">
+        <div className="card space-y-2">
+          <h2>练习（录音 + 评分占位）</h2>
+          <p>缺少 lessonId，请从课程列表进入。</p>
+        </div>
       </div>
     );
   }
@@ -56,9 +58,11 @@ export default async function PracticePage({
 
   if (exercises.length === 0) {
     return (
-      <div>
-        <h2>练习（录音 + 评分占位）</h2>
-        <p>该课程暂无练习。</p>
+      <div className="section">
+        <div className="card space-y-2">
+          <h2>练习（录音 + 评分占位）</h2>
+          <p>该课程暂无练习。</p>
+        </div>
       </div>
     );
   }
