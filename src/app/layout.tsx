@@ -9,11 +9,13 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="zh-CN">
-      <body>
-        <header style={{ padding: 12, borderBottom: '1px solid #eee' }}>
-          <strong>English Phonemes</strong>
+      <body className="min-h-screen bg-gray-50">
+        <header className="sticky top-0 z-10 bg-white/80 backdrop-blur border-b border-gray-200">
+          <div className="mx-auto max-w-5xl px-4 py-3 flex items-center justify-between">
+            <div className="text-lg font-semibold tracking-tight">English Phonemes</div>
+          </div>
         </header>
-        <main style={{ padding: 12 }}>{children}</main>
+        <main className="mx-auto max-w-5xl px-4 py-6">{children}</main>
       </body>
     </html>
   );

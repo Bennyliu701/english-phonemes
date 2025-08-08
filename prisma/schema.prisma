@@ -6,8 +6,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model User {
@@ -28,12 +29,13 @@ enum Role {
 }
 
 model Lesson {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  title     String
-  module    String // vowel/consonant/prosody
-  level     Int
-  exercises Exercise[]
+  id         String    @id @default(cuid())
+  createdAt  DateTime  @default(now())
+  title      String
+  module     String // vowel/consonant/prosody
+  level      Int
+  exercises  Exercise[]
+  progresses Progress[]
 }
 
 model Phoneme {
