@@ -1,0 +1,94 @@
+// Prisma schema for MVP
+// Use a free Postgres (e.g., Neon) and set DATABASE_URL in environment
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  role      Role
+  email     String   @unique
+  name      String?
+  progress  Progress[]
+  attempts  Attempt[]
+}
+
+enum Role {
+  student
+  teacher
+  parent
+}
+
+model Lesson {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  title     String
+  module    String // vowel/consonant/prosody
+  level     Int
+  exercises Exercise[]
+}
+
+model Phoneme {
+  id      String  @id @default(cuid())
+  symbol  String  @unique
+  type    String  // vowel | consonant
+  tips    String?
+  examples String?
+}
+
+model Exercise {
+  id         String    @id @default(cuid())
+  lesson     Lesson    @relation(fields: [lessonId], references: [id])
+  lessonId   String
+  type       ExerciseType
+  targetText String
+  phonemeIds String[]
+  attempts   Attempt[]
+}
+
+enum ExerciseType {
+  phoneme
+  word
+  sentence
+}
+
+model Attempt {
+  id            String   @id @default(cuid())
+  user          User     @relation(fields: [userId], references: [id])
+  userId        String
+  exercise      Exercise @relation(fields: [exerciseId], references: [id])
+  exerciseId    String
+  createdAt     DateTime @default(now())
+  scoreOverall  Float
+  scorePhonemes Json
+  durationMs    Int
+  audio         Audio?
+}
+
+model Audio {
+  id         String   @id @default(cuid())
+  url        String
+  format     String
+  durationMs Int
+  attempt    Attempt  @relation(fields: [attemptId], references: [id])
+  attemptId  String   @unique
+}
+
+model Progress {
+  id         String   @id @default(cuid())
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
+  lesson     Lesson   @relation(fields: [lessonId], references: [id])
+  lessonId   String
+  status     String   // not_started | in_progress | completed
+  mastery    Int      // 0-100
+  nextReview DateTime?
+}
